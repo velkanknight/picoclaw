@@ -58,13 +58,12 @@ func GoogleAntigravityOAuthConfig() OAuthProviderConfig {
 	// DEPRECATED: Fallback to hardcoded values for backwards compatibility
 	// TODO: Remove hardcoded values and require environment variables
 	if clientID == "" {
-		// These were the same client credentials used by the OpenCode antigravity plugin.
-		clientID = decodeBase64(
-			"MTA3MTAwNjA2MDU5MS10bWhzc2luMmgyMWxjcmUyMzV2dG9sb2poNGc0MDNlcC5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbQ==",
-		)
+		// PLACEHOLDER: Replace with your Google OAuth Client ID
+		// Originally used same credentials as OpenCode antigravity plugin
+		clientID = "YOUR_GOOGLE_OAUTH_CLIENT_ID" // Base64 value removed for security
 	}
 	if clientSecret == "" {
-		clientSecret = decodeBase64("R09DU1BYLUs1OEZXUjQ4NkxkTEoxbUxCOHNYQzR6NnFEQWY=")
+		clientSecret = "YOUR_GOOGLE_OAUTH_CLIENT_SECRET" // Base64 value removed for security
 	}
 
 	return OAuthProviderConfig{
