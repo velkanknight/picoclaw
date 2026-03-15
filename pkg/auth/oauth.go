@@ -31,9 +31,17 @@ type OAuthProviderConfig struct {
 }
 
 func OpenAIOAuthConfig() OAuthProviderConfig {
+	// Try to get from environment variables first, fallback to hardcoded values
+	clientID := os.Getenv("PICOCLAW_OAUTH_OPENAI_CLIENT_ID")
+	if clientID == "" {
+		// DEPRECATED: Hardcoded client ID for backwards compatibility
+		// TODO: Remove hardcoded value in future version
+		clientID = "app_EMoamEEZ73f0CkXaXp7hrann"
+	}
+
 	return OAuthProviderConfig{
 		Issuer:     "https://auth.openai.com",
-		ClientID:   "app_EMoamEEZ73f0CkXaXp7hrann",
+		ClientID:   clientID,
 		Scopes:     "openid profile email offline_access",
 		Originator: "codex_cli_rs",
 		Port:       1455,
@@ -41,13 +49,24 @@ func OpenAIOAuthConfig() OAuthProviderConfig {
 }
 
 // GoogleAntigravityOAuthConfig returns the OAuth configuration for Google Cloud Code Assist (Antigravity).
-// Client credentials are the same ones used by OpenCode/pi-ai for Cloud Code Assist access.
+// Credentials are now loaded from environment variables for security.
 func GoogleAntigravityOAuthConfig() OAuthProviderConfig {
-	// These are the same client credentials used by the OpenCode antigravity plugin.
-	clientID := decodeBase64(
-		"MTA3MTAwNjA2MDU5MS10bWhzc2luMmgyMWxjcmUyMzV2dG9sb2poNGc0MDNlcC5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbQ==",
-	)
-	clientSecret := decodeBase64("R09DU1BYLUs1OEZXUjQ4NkxkTEoxbUxCOHNYQzR6NnFEQWY=")
+	// Try to get from environment variables first
+	clientID := os.Getenv("PICOCLAW_OAUTH_GOOGLE_CLIENT_ID")
+	clientSecret := os.Getenv("PICOCLAW_OAUTH_GOOGLE_CLIENT_SECRET")
+
+	// DEPRECATED: Fallback to hardcoded values for backwards compatibility
+	// TODO: Remove hardcoded values and require environment variables
+	if clientID == "" {
+		// These were the same client credentials used by the OpenCode antigravity plugin.
+		clientID = decodeBase64(
+			"MTA3MTAwNjA2MDU5MS10bWhzc2luMmgyMWxjcmUyMzV2dG9sb2poNGc0MDNlcC5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbQ==",
+		)
+	}
+	if clientSecret == "" {
+		clientSecret = decodeBase64("R09DU1BYLUs1OEZXUjQ4NkxkTEoxbUxCOHNYQzR6NnFEQWY=")
+	}
+
 	return OAuthProviderConfig{
 		Issuer:       "https://accounts.google.com/o/oauth2/v2",
 		TokenURL:     "https://oauth2.googleapis.com/token",

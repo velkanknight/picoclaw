@@ -179,11 +179,53 @@ async function fetchProjectId(accessToken: string): Promise<string> {
 
 ## OAuth Implementation Details
 
-### Client Credentials
+### Client Credentials Configuration
 
-**Important:** These are base64-encoded in the source code for sync with pi-ai:
+⚠️ **Security Notice**: OAuth credentials should be stored as environment variables, not hardcoded in source code.
+
+#### 1. Environment Variable Configuration (Recommended)
+
+Set up your OAuth credentials via environment variables:
+
+```bash
+# For Google Antigravity (Cloud Code Assist)
+export PICOCLAW_OAUTH_GOOGLE_CLIENT_ID="your_google_client_id"
+export PICOCLAW_OAUTH_GOOGLE_CLIENT_SECRET="your_google_client_secret"
+export PICOCLAW_OAUTH_GOOGLE_ENABLED=true
+
+# For OpenAI OAuth
+export PICOCLAW_OAUTH_OPENAI_CLIENT_ID="your_openai_client_id"
+export PICOCLAW_OAUTH_OPENAI_CLIENT_SECRET="your_openai_client_secret"
+export PICOCLAW_OAUTH_OPENAI_ENABLED=true
+```
+
+You can also create a `.env` file based on `.env.example`:
+
+```bash
+cp .env.example .env
+# Edit .env file with your credentials
+```
+
+#### 2. Obtaining OAuth Credentials
+
+**For Google Cloud (Antigravity):**
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create or select a project
+3. Enable Google Cloud APIs 
+4. Go to "APIs & Services" > "Credentials"
+5. Create OAuth 2.0 Client ID for "Desktop Application"
+
+**For OpenAI:**
+1. Visit OpenAI Developer Dashboard
+2. Create a new OAuth application
+3. Note the Client ID and Client Secret
+
+#### 3. Legacy Hardcoded Values (Deprecated)
+
+**⚠️ DEPRECATED:** The following hardcoded values are kept for backwards compatibility but will be removed in future versions:
 
 ```typescript
+// DEPRECATED: These were base64-encoded for sync with pi-ai
 const decode = (s: string) => Buffer.from(s, "base64").toString();
 
 const CLIENT_ID = decode(
@@ -191,6 +233,8 @@ const CLIENT_ID = decode(
 );
 const CLIENT_SECRET = decode("R09DU1BYLUs1OEZXUjQ4NkxkTEoxbUxCOHNYQzR6NnFEQWY=");
 ```
+
+**Migration Required:** Please migrate to environment variables before these hardcoded values are removed.
 
 ### OAuth Flow Modes
 

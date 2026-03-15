@@ -58,6 +58,7 @@ type Config struct {
 	Tools     ToolsConfig     `json:"tools"`
 	Heartbeat HeartbeatConfig `json:"heartbeat"`
 	Devices   DevicesConfig   `json:"devices"`
+	OAuth     OAuthConfig     `json:"oauth"`
 }
 
 // MarshalJSON implements custom JSON marshaling for Config
@@ -496,6 +497,19 @@ type BraveConfig struct {
 	Enabled    bool   `json:"enabled"     env:"PICOCLAW_TOOLS_WEB_BRAVE_ENABLED"`
 	APIKey     string `json:"api_key"     env:"PICOCLAW_TOOLS_WEB_BRAVE_API_KEY"`
 	MaxResults int    `json:"max_results" env:"PICOCLAW_TOOLS_WEB_BRAVE_MAX_RESULTS"`
+}
+
+// OAuthConfig represents OAuth configuration for different providers
+type OAuthConfig struct {
+	OpenAI OAuthProviderSettings `json:"openai"`
+	Google OAuthProviderSettings `json:"google"`
+}
+
+// OAuthProviderSettings contains OAuth credentials and settings for a specific provider
+type OAuthProviderSettings struct {
+	ClientID     string `json:"client_id"     env:"PICOCLAW_OAUTH_{{.Name}}_CLIENT_ID"`
+	ClientSecret string `json:"client_secret" env:"PICOCLAW_OAUTH_{{.Name}}_CLIENT_SECRET"`
+	Enabled      bool   `json:"enabled"       env:"PICOCLAW_OAUTH_{{.Name}}_ENABLED"`
 }
 
 type TavilyConfig struct {

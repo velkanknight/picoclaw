@@ -52,6 +52,17 @@
 > * **Warning:** picoclaw is in early development now and may have unresolved network security issues. Do not deploy to production environments before the v1.0 release.
 > * **Note:** picoclaw has recently merged a lot of PRs, which may result in a larger memory footprint (10–20MB) in the latest versions. We plan to prioritize resource optimization as soon as the current feature set reaches a stable state.
 
+> [!IMPORTANT]
+> **🔐 OAUTH CREDENTIAL MIGRATION**
+>
+> **Security Enhancement:** Hardcoded OAuth credentials are being deprecated for environment variables.
+> 
+> * **Action Required:** Configure OAuth credentials via environment variables (see [Migration Guide](docs/SECURITY_CREDENTIAL_MIGRATION.md))
+> * **Current Behavior:** Hardcoded fallback values still work but will be removed in future versions  
+> * **Setup:** Copy `.env.example` to `.env` and configure your OAuth credentials
+>
+> See the [complete migration guide](docs/SECURITY_CREDENTIAL_MIGRATION.md) for detailed instructions.
+
 ## 📢 News
 
 2026-02-16 🎉 PicoClaw hit 12K stars in one week! Thank you all for your support! PicoClaw is growing faster than we ever imagined. Given the high volume of PRs, we urgently need community maintainers. Our volunteer roles and roadmap are officially posted [here](docs/ROADMAP.md) —we can’t wait to have you on board!
