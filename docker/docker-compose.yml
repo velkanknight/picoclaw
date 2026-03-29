@@ -1,34 +1,30 @@
+version: "3.9"
+
 services:
-  # ─────────────────────────────────────────────
   # PicoClaw Agent (one-shot query)
-  #   docker compose -f docker/docker-compose.yml run --rm picoclaw-agent -m "Hello"
-  # ─────────────────────────────────────────────
+  # Use `docker compose run --rm picoclaw-agent -m "Hello"` to run a single query.
   picoclaw-agent:
     image: docker.io/sipeed/picoclaw:latest
     container_name: picoclaw-agent
-    profiles:
-      - agent
-    # Uncomment to access host network; leave commented unless needed.
-    #extra_hosts:
-    #  - "host.docker.internal:host-gateway"
+    restart: "no"
+    # Mount local data so config and workspace are persistent
     volumes:
-      - ./data:/root/.picoclaw
+      # Mount the repository's .data directory so the container sees your active config
+      - ../.data:/root/.picoclaw
     entrypoint: ["picoclaw", "agent"]
     stdin_open: true
     tty: true
 
-  # ─────────────────────────────────────────────
-  # PicoClaw Gateway (Long-running Bot)
-  #   docker compose -f docker/docker-compose.yml up picoclaw-gateway
-  # ─────────────────────────────────────────────
+  # PicoClaw Gateway (long-running service)
+  # Run `docker compose up` (or `docker compose up -d`) to bring this up by default.
   picoclaw-gateway:
     image: docker.io/sipeed/picoclaw:latest
     container_name: picoclaw-gateway
     restart: on-failure
-    profiles:
-      - gateway
-    # Uncomment to access host network; leave commented unless needed.
-    #extra_hosts:
-    #  - "host.docker.internal:host-gateway"
+    # Mount the repository's .data directory so the gateway reads the same config
     volumes:
-      - ./data:/root/.picoclaw
+      - ../.data:/root/.picoclaw
+    environment:
+      - PICOCLAW_CONFIG=/root/.picoclaw/config.json
+    ports:
+      - "18790:18790"

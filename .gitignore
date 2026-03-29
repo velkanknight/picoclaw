@@ -52,3 +52,6 @@ dist/
 
 # Windows Application Icon/Resource
 *.syso
+
+# Runtime data
+.data/
